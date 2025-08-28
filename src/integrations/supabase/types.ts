@@ -119,6 +119,111 @@ export type Database = {
         }
         Relationships: []
       }
+      kockabarlang_reservations: {
+        Row: {
+          created_at: string
+          end_date: string
+          end_time: string
+          id: string
+          start_date: string
+          start_time: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          end_time: string
+          id?: string
+          start_date: string
+          start_time: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          end_time?: string
+          id?: string
+          start_date?: string
+          start_time?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      kockabarlang_szulinapok: {
+        Row: {
+          birthday: string
+          child: string
+          created_at: string
+          date: string
+          email: string
+          id: string
+          message: string | null
+          parent: string
+          phone: string
+          theme: string
+          time: string
+          updated_at: string
+        }
+        Insert: {
+          birthday: string
+          child: string
+          created_at?: string
+          date: string
+          email: string
+          id?: string
+          message?: string | null
+          parent: string
+          phone: string
+          theme: string
+          time: string
+          updated_at?: string
+        }
+        Update: {
+          birthday?: string
+          child?: string
+          created_at?: string
+          date?: string
+          email?: string
+          id?: string
+          message?: string | null
+          parent?: string
+          phone?: string
+          theme?: string
+          time?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      kockabarlang_szulinapthemes: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image: string | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image?: string | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image?: string | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       locations: {
         Row: {
           created_at: string | null

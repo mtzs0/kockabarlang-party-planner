@@ -52,6 +52,13 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				'form-bg': 'hsl(var(--form-bg))',
+				'step-inactive': 'hsl(var(--step-inactive))',
+				'step-active': 'hsl(var(--step-active))',
+				'step-completed': 'hsl(var(--step-completed))',
+				'calendar-available': 'hsl(var(--calendar-available))',
+				'calendar-unavailable': 'hsl(var(--calendar-unavailable))',
+				'calendar-selected': 'hsl(var(--calendar-selected))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
