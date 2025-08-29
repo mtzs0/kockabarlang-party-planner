@@ -70,7 +70,7 @@ export const DateSelectionStep = ({ selectedDate, onDateSelect }: DateSelectionS
   const weekDays = ['Hé', 'Ke', 'Sze', 'Cs', 'Pé', 'Szo', 'Va'];
 
   return (
-    <div className="h-full flex flex-col p-4">
+    <div className="h-full flex flex-col p-3">
       <div className="text-center mb-4">
         <h2 className="text-lg font-semibold text-foreground mb-1">Válassz dátumot</h2>
         <p className="text-sm text-muted-foreground">Kattints a kívánt napra a foglaláshoz</p>
@@ -104,16 +104,16 @@ export const DateSelectionStep = ({ selectedDate, onDateSelect }: DateSelectionS
       {/* Calendar */}
       <div className="flex-1 overflow-y-auto">
         {/* Week Headers */}
-        <div className="grid grid-cols-7 gap-1 mb-1">
+        <div className="grid grid-cols-7 gap-0.5 mb-1">
           {weekDays.map((day) => (
-            <div key={day} className="text-center text-xs font-medium text-muted-foreground p-1">
+            <div key={day} className="text-center text-xs font-medium text-muted-foreground py-1">
               {day}
             </div>
           ))}
         </div>
 
         {/* Calendar Days */}
-        <div className="grid grid-cols-7 gap-1">
+        <div className="grid grid-cols-7 gap-0.5">
           {days.map((day, index) => (
             <button
               key={index}
