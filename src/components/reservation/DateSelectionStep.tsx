@@ -70,14 +70,14 @@ export const DateSelectionStep = ({ selectedDate, onDateSelect }: DateSelectionS
   const weekDays = ['Hé', 'Ke', 'Sze', 'Cs', 'Pé', 'Szo', 'Va'];
 
   return (
-    <div className="h-full flex flex-col p-3">
-      <div className="text-center mb-4">
+    <div className="h-full flex flex-col p-2">
+      <div className="text-center mb-2">
         <h2 className="text-lg font-semibold text-foreground mb-1">Válassz dátumot</h2>
-        <p className="text-sm text-muted-foreground">Kattints a kívánt napra a foglaláshoz</p>
+        <p className="text-xs text-muted-foreground">Kattints a kívánt napra a foglaláshoz</p>
       </div>
 
       {/* Month Navigation */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2">
         <Button
           variant="outline"
           size="sm"
@@ -104,23 +104,23 @@ export const DateSelectionStep = ({ selectedDate, onDateSelect }: DateSelectionS
       {/* Calendar */}
       <div className="flex-1 overflow-y-auto">
         {/* Week Headers */}
-        <div className="grid grid-cols-7 gap-0.5 mb-1">
+        <div className="grid grid-cols-7 gap-0 mb-1">
           {weekDays.map((day) => (
-            <div key={day} className="text-center text-xs font-medium text-muted-foreground py-1">
+            <div key={day} className="text-center text-xs font-medium text-muted-foreground py-0.5">
               {day}
             </div>
           ))}
         </div>
 
         {/* Calendar Days */}
-        <div className="grid grid-cols-7 gap-0.5">
+        <div className="grid grid-cols-7 gap-0">
           {days.map((day, index) => (
             <button
               key={index}
               onClick={() => day.isSelectable && handleDateClick(day.date)}
               disabled={!day.isSelectable}
               className={cn(
-                "aspect-square flex items-center justify-center text-xs rounded-lg transition-all duration-200",
+                "h-8 w-full flex items-center justify-center text-xs rounded transition-all duration-200",
                 "hover:scale-105 active:scale-95",
                 {
                   "text-muted-foreground": !day.isCurrentMonth,
