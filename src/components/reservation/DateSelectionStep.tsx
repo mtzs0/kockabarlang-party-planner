@@ -44,7 +44,7 @@ export const DateSelectionStep = ({ selectedDate, onDateSelect }: DateSelectionS
         isPast,
         isToday,
         isSelected,
-        isSelectable: isCurrentMonth && !isPast,
+        isSelectable: !isPast,
       });
     }
 
@@ -70,14 +70,14 @@ export const DateSelectionStep = ({ selectedDate, onDateSelect }: DateSelectionS
   const weekDays = ['Hé', 'Ke', 'Sze', 'Cs', 'Pé', 'Szo', 'Va'];
 
   return (
-    <div className="h-full flex flex-col p-6">
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-foreground mb-2">Válassz dátumot</h2>
-        <p className="text-muted-foreground">Kattints a kívánt napra a foglaláshoz</p>
+    <div className="h-full flex flex-col p-4">
+      <div className="text-center mb-4">
+        <h2 className="text-lg font-semibold text-foreground mb-1">Válassz dátumot</h2>
+        <p className="text-sm text-muted-foreground">Kattints a kívánt napra a foglaláshoz</p>
       </div>
 
       {/* Month Navigation */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3">
         <Button
           variant="outline"
           size="sm"
@@ -104,9 +104,9 @@ export const DateSelectionStep = ({ selectedDate, onDateSelect }: DateSelectionS
       {/* Calendar */}
       <div className="flex-1 overflow-y-auto">
         {/* Week Headers */}
-        <div className="grid grid-cols-7 gap-1 mb-2">
+        <div className="grid grid-cols-7 gap-1 mb-1">
           {weekDays.map((day) => (
-            <div key={day} className="text-center text-sm font-medium text-muted-foreground p-2">
+            <div key={day} className="text-center text-xs font-medium text-muted-foreground p-1">
               {day}
             </div>
           ))}
@@ -120,7 +120,7 @@ export const DateSelectionStep = ({ selectedDate, onDateSelect }: DateSelectionS
               onClick={() => day.isSelectable && handleDateClick(day.date)}
               disabled={!day.isSelectable}
               className={cn(
-                "aspect-square flex items-center justify-center text-sm rounded-lg transition-all duration-200",
+                "aspect-square flex items-center justify-center text-xs rounded-lg transition-all duration-200",
                 "hover:scale-105 active:scale-95",
                 {
                   "text-muted-foreground": !day.isCurrentMonth,
@@ -140,9 +140,9 @@ export const DateSelectionStep = ({ selectedDate, onDateSelect }: DateSelectionS
       </div>
 
       {selectedDate && (
-        <div className="mt-4 p-3 bg-muted rounded-lg text-center">
-          <p className="text-sm text-muted-foreground">Kiválasztott dátum:</p>
-          <p className="font-semibold text-foreground">
+        <div className="mt-3 p-2 bg-muted rounded-lg text-center">
+          <p className="text-xs text-muted-foreground">Kiválasztott dátum:</p>
+          <p className="text-sm font-semibold text-foreground">
             {new Date(selectedDate + 'T00:00:00').toLocaleDateString('hu-HU', {
               year: 'numeric',
               month: 'long',

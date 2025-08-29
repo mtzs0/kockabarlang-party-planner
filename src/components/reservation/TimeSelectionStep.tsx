@@ -18,12 +18,12 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
   const unavailableSlots = ["12:00", "15:00"]; // Example blocked slots
 
   return (
-    <div className="h-full flex flex-col p-6">
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold text-foreground mb-2">Válassz időpontot</h2>
-        <p className="text-muted-foreground">Elérhető időpontok erre a napra:</p>
+    <div className="h-full flex flex-col p-4">
+      <div className="text-center mb-4">
+        <h2 className="text-lg font-semibold text-foreground mb-1">Válassz időpontot</h2>
+        <p className="text-sm text-muted-foreground">Elérhető időpontok erre a napra:</p>
         {selectedDate && (
-          <p className="text-sm font-medium text-primary mt-1">
+          <p className="text-xs font-medium text-primary mt-1">
             {new Date(selectedDate + 'T00:00:00').toLocaleDateString('hu-HU', {
               year: 'numeric',
               month: 'long',
@@ -36,7 +36,7 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
 
       {/* Time Slots */}
       <div className="flex-1 overflow-y-auto">
-        <div className="grid grid-cols-2 gap-3 max-w-md mx-auto">
+        <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
           {timeSlots.map((time) => {
             const isUnavailable = unavailableSlots.includes(time);
             const isSelected = selectedTime === time;
@@ -48,7 +48,7 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
                 disabled={isUnavailable}
                 onClick={() => onTimeSelect(time)}
                 className={cn(
-                  "h-16 flex flex-col items-center justify-center transition-all duration-200",
+                  "h-12 flex flex-col items-center justify-center transition-all duration-200",
                   "hover:scale-105 active:scale-95",
                   {
                     "bg-primary text-primary-foreground shadow-lg": isSelected,
@@ -56,8 +56,8 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
                   }
                 )}
               >
-                <Clock className="w-4 h-4 mb-1" />
-                <span className="font-semibold">{time}</span>
+                <Clock className="w-3 h-3 mb-1" />
+                <span className="text-sm font-semibold">{time}</span>
                 {isUnavailable && (
                   <span className="text-xs text-muted-foreground">Foglalt</span>
                 )}
@@ -68,9 +68,9 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
       </div>
 
       {selectedTime && (
-        <div className="mt-4 p-3 bg-muted rounded-lg text-center">
-          <p className="text-sm text-muted-foreground">Kiválasztott időpont:</p>
-          <p className="font-semibold text-foreground">{selectedTime}</p>
+        <div className="mt-3 p-2 bg-muted rounded-lg text-center">
+          <p className="text-xs text-muted-foreground">Kiválasztott időpont:</p>
+          <p className="text-sm font-semibold text-foreground">{selectedTime}</p>
         </div>
       )}
     </div>
