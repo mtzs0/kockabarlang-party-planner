@@ -1,13 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 interface ClientData {
@@ -38,11 +34,71 @@ interface ClientDataStepProps {
 export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
   const [formData, setFormData] = useState<ClientData>(data);
   const [errors, setErrors] = useState<ClientDataErrors>({});
+  const birthdayInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (field: keyof ClientData, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  const formatBirthdayInput = (value: string) => {
+    // Remove all non-digit characters
+    const digits = value.replace(/\D/g, '');
+    
+    // Format as YYYY-MM-DD
+    let formatted = digits;
+    if (digits.length >= 4) {
+      formatted = digits.slice(0, 4);
+      if (digits.length >= 6) {
+        formatted += '-' + digits.slice(4, 6);
+        if (digits.length >= 8) {
+          formatted += '-' + digits.slice(6, 8);
+        }
+      } else if (digits.length > 4) {
+        formatted += '-' + digits.slice(4);
+      }
+    }
+    
+    return formatted;
+  };
+
+  const handleBirthdayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const formatted = formatBirthdayInput(value);
+    handleInputChange('childBirthday', formatted);
+  };
+
+  const handleBirthdayKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
+    const value = input.value;
+    
+    // Allow backspace, delete, arrow keys, tab
+    if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
+      return;
+    }
+    
+    // Only allow numbers
+    if (!/^\d$/.test(e.key)) {
+      e.preventDefault();
+      return;
+    }
+    
+    // Auto-advance cursor after year (4 digits) and month (2 digits)
+    const cursorPosition = input.selectionStart || 0;
+    const digits = value.replace(/\D/g, '');
+    
+    if (digits.length === 4 && cursorPosition === 4) {
+      // After entering year, move to month position
+      setTimeout(() => {
+        input.setSelectionRange(5, 5);
+      }, 0);
+    } else if (digits.length === 6 && cursorPosition === 7) {
+      // After entering month, move to day position  
+      setTimeout(() => {
+        input.setSelectionRange(8, 8);
+      }, 0);
     }
   };
 
@@ -59,6 +115,18 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
 
     if (!formData.childBirthday) {
       newErrors.childBirthday = "A születési dátum kötelező";
+    } else {
+      // Validate date format YYYY-MM-DD
+      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      if (!dateRegex.test(formData.childBirthday)) {
+        newErrors.childBirthday = "Helyes formátum: ÉÉÉÉ-HH-NN";
+      } else {
+        // Validate if it's a real date
+        const date = new Date(formData.childBirthday);
+        if (isNaN(date.getTime()) || date > new Date()) {
+          newErrors.childBirthday = "Érvénytelen vagy jövőbeli dátum";
+        }
+      }
     }
 
     if (!formData.phone.trim()) {
@@ -155,40 +223,17 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
 
           {/* Child Birthday */}
           <div>
-            <Label>Szülinapos gyermek születési dátuma *</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !formData.childBirthday && "text-muted-foreground",
-                    errors.childBirthday && "border-destructive"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {formData.childBirthday ? (
-                    format(new Date(formData.childBirthday), "yyyy. MM. dd.")
-                  ) : (
-                    <span>Válassz dátumot</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={formData.childBirthday ? new Date(formData.childBirthday) : undefined}
-                  onSelect={(date) => {
-                    if (date) {
-                      handleInputChange('childBirthday', date.toISOString().split('T')[0]);
-                    }
-                  }}
-                  disabled={(date) => date > new Date()}
-                  initialFocus
-                  className="pointer-events-auto"
-                />
-              </PopoverContent>
-            </Popover>
+            <Label htmlFor="childBirthday">Szülinapos gyermek születési dátuma *</Label>
+            <Input
+              ref={birthdayInputRef}
+              id="childBirthday"
+              placeholder="ÉÉÉÉ-HH-NN"
+              value={formData.childBirthday}
+              onChange={handleBirthdayChange}
+              onKeyDown={handleBirthdayKeyDown}
+              maxLength={10}
+              className={cn(errors.childBirthday && "border-destructive")}
+            />
             {errors.childBirthday && (
               <p className="text-sm text-destructive mt-1">{errors.childBirthday}</p>
             )}
