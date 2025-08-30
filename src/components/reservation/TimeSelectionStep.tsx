@@ -48,7 +48,7 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
                 disabled={isUnavailable}
                 onClick={() => onTimeSelect(time)}
                 className={cn(
-                  "h-12 flex flex-col items-center justify-center transition-all duration-200 p-2",
+                  "h-16 flex flex-col items-center justify-center transition-all duration-200 p-2",
                   "hover:scale-105 active:scale-95",
                   {
                     "bg-primary text-primary-foreground shadow-lg": isSelected,
@@ -56,10 +56,10 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
                   }
                 )}
               >
-                <div className="flex flex-col items-center justify-center h-full space-y-0.5">
+                <div className="flex flex-col items-center justify-center h-full space-y-1">
                   <Clock className="w-3 h-3 flex-shrink-0" />
                   <span className="text-sm font-semibold">{time}</span>
-                  <span className="text-xs h-3 flex items-center">
+                  <span className="text-xs h-4 flex items-center justify-center">
                     {isUnavailable ? "Foglalt" : ""}
                   </span>
                 </div>
