@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { MaskedDateInput } from "@/components/ui/masked-date-input";
 import { cn } from "@/lib/utils";
 
 interface ClientData {
@@ -34,7 +35,6 @@ interface ClientDataStepProps {
 export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
   const [formData, setFormData] = useState<ClientData>(data);
   const [errors, setErrors] = useState<ClientDataErrors>({});
-  const birthdayInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (field: keyof ClientData, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -43,63 +43,8 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
     }
   };
 
-  const formatBirthdayInput = (value: string) => {
-    // Remove all non-digit characters
-    const digits = value.replace(/\D/g, '');
-    
-    // Format as YYYY-MM-DD
-    let formatted = digits;
-    if (digits.length >= 4) {
-      formatted = digits.slice(0, 4);
-      if (digits.length >= 6) {
-        formatted += '-' + digits.slice(4, 6);
-        if (digits.length >= 8) {
-          formatted += '-' + digits.slice(6, 8);
-        }
-      } else if (digits.length > 4) {
-        formatted += '-' + digits.slice(4);
-      }
-    }
-    
-    return formatted;
-  };
-
-  const handleBirthdayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const formatted = formatBirthdayInput(value);
-    handleInputChange('childBirthday', formatted);
-  };
-
-  const handleBirthdayKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const input = e.currentTarget;
-    const value = input.value;
-    
-    // Allow backspace, delete, arrow keys, tab
-    if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
-      return;
-    }
-    
-    // Only allow numbers
-    if (!/^\d$/.test(e.key)) {
-      e.preventDefault();
-      return;
-    }
-    
-    // Auto-advance cursor after year (4 digits) and month (2 digits)
-    const cursorPosition = input.selectionStart || 0;
-    const digits = value.replace(/\D/g, '');
-    
-    if (digits.length === 4 && cursorPosition === 4) {
-      // After entering year, move to month position
-      setTimeout(() => {
-        input.setSelectionRange(5, 5);
-      }, 0);
-    } else if (digits.length === 6 && cursorPosition === 7) {
-      // After entering month, move to day position  
-      setTimeout(() => {
-        input.setSelectionRange(8, 8);
-      }, 0);
-    }
+  const handleBirthdayChange = (value: string) => {
+    handleInputChange('childBirthday', value);
   };
 
   const validateForm = () => {
@@ -224,14 +169,11 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
           {/* Child Birthday */}
           <div>
             <Label htmlFor="childBirthday">Szülinapos gyermek születési dátuma *</Label>
-            <Input
-              ref={birthdayInputRef}
+            <MaskedDateInput
               id="childBirthday"
-              placeholder="ÉÉÉÉ-HH-NN"
               value={formData.childBirthday}
               onChange={handleBirthdayChange}
-              onKeyDown={handleBirthdayKeyDown}
-              maxLength={10}
+              placeholder="év-hónap-nap"
               className={cn(errors.childBirthday && "border-destructive")}
             />
             {errors.childBirthday && (
