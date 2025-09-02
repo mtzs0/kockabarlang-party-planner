@@ -27,7 +27,6 @@ const STEPS = [
   { id: 3, title: "Téma" },
   { id: 4, title: "Adatok" },
   { id: 5, title: "Összefoglaló" },
-  { id: 6, title: "Sikeres" },
 ];
 
 export const BirthdayReservationForm = () => {
@@ -137,7 +136,7 @@ export const BirthdayReservationForm = () => {
         <div className="p-4 border-b">
           <StepIndicator
             steps={STEPS}
-            currentStep={currentStep}
+            currentStep={currentStep > 5 ? 5 : currentStep}
             completedSteps={completedSteps}
             onStepClick={handleStepClick}
           />
