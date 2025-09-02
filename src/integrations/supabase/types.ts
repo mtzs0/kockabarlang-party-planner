@@ -297,6 +297,7 @@ export type Database = {
           key: string
           location_id: string | null
           name: string
+          rank: number
           role: string
           service_ids: string[] | null
           updated_at: string
@@ -310,6 +311,7 @@ export type Database = {
           key: string
           location_id?: string | null
           name: string
+          rank?: number
           role: string
           service_ids?: string[] | null
           updated_at?: string
@@ -323,6 +325,7 @@ export type Database = {
           key?: string
           location_id?: string | null
           name?: string
+          rank?: number
           role?: string
           service_ids?: string[] | null
           updated_at?: string
@@ -415,6 +418,7 @@ export type Database = {
           name: string
           price: number
           time: number
+          time_end: number | null
           updated_at: string
         }
         Insert: {
@@ -426,6 +430,7 @@ export type Database = {
           name: string
           price: number
           time: number
+          time_end?: number | null
           updated_at?: string
         }
         Update: {
@@ -437,6 +442,7 @@ export type Database = {
           name?: string
           price?: number
           time?: number
+          time_end?: number | null
           updated_at?: string
         }
         Relationships: []
