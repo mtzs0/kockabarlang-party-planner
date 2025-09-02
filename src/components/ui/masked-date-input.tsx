@@ -107,8 +107,8 @@ export const MaskedDateInput = ({
       updateDisplayAndValue(valueWithDash);
       updateCursor(9);
     } else if (cursorPos >= 8 && cursorPos < 10) {
-      // Day section (positions 8-9)
-      updateCursor(Math.min(cursorPos + 1, 10));
+      // Day section (positions 8-9) - cursor advances normally
+      updateCursor(cursorPos + 1);
     }
   };
 
