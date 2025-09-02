@@ -17,8 +17,8 @@ export const SuccessStep = ({ data }: SuccessStepProps) => {
   };
 
   return (
-    <div className="h-full flex flex-col items-center justify-center p-6 text-center">
-      <div className="max-w-md mx-auto space-y-6">
+    <div className="h-full flex flex-col items-center justify-center p-6 text-center overflow-y-auto">
+      <div className="max-w-md mx-auto space-y-6 pb-8">
         {/* Success Icon */}
         <div className="flex justify-center">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
