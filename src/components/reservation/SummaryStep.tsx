@@ -36,11 +36,6 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
 
       if (error) throw error;
 
-      toast({
-        title: "Foglalás sikeres!",
-        description: "A születésnapi foglalásod sikeresen rögzítettük. Hamarosan keresünk a részletekkel!",
-      });
-
       onConfirm();
     } catch (error) {
       console.error('Error creating reservation:', error);

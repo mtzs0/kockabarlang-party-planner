@@ -6,6 +6,7 @@ import { TimeSelectionStep } from "./reservation/TimeSelectionStep";
 import { ThemeSelectionStep } from "./reservation/ThemeSelectionStep";
 import { ClientDataStep } from "./reservation/ClientDataStep";
 import { SummaryStep } from "./reservation/SummaryStep";
+import { SuccessStep } from "./reservation/SuccessStep";
 
 export interface ReservationData {
   date: string;
@@ -26,6 +27,7 @@ const STEPS = [
   { id: 3, title: "Téma" },
   { id: 4, title: "Adatok" },
   { id: 5, title: "Összefoglaló" },
+  { id: 6, title: "Sikeres" },
 ];
 
 export const BirthdayReservationForm = () => {
@@ -51,7 +53,7 @@ export const BirthdayReservationForm = () => {
       setCompletedSteps(prev => [...prev, step]);
     }
     
-    if (step < 5) {
+    if (step < 6) {
       setCurrentStep(step + 1);
     }
   };
@@ -106,6 +108,12 @@ export const BirthdayReservationForm = () => {
           <SummaryStep
             data={reservationData}
             onConfirm={() => handleStepComplete(5, {})}
+          />
+        );
+      case 6:
+        return (
+          <SuccessStep
+            data={reservationData}
           />
         );
       default:
