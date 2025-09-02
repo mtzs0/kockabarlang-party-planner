@@ -25,25 +25,66 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
       
       setLoading(true);
       try {
-        const { data: reservations, error } = await supabase
+        // Fetch birthday party reservations for the specific date
+        const { data: birthdayReservations, error: birthdayError } = await supabase
           .from('kockabarlang_szulinapok')
           .select('time')
           .eq('date', selectedDate);
 
-        if (error) {
-          console.error('Error fetching reservations:', error);
-          return;
+        if (birthdayError) {
+          console.error('Error fetching birthday reservations:', birthdayError);
         }
 
-        // Convert time objects to strings and extract reserved time slots
-        const reserved = reservations?.map(reservation => {
-          // Convert time format from database (HH:mm:ss) to display format (HH:mm)
-          const timeStr = reservation.time;
-          if (typeof timeStr === 'string') {
-            return timeStr.slice(0, 5); // Extract HH:mm from HH:mm:ss
-          }
-          return timeStr;
-        }) || [];
+        // Fetch ongoing reservations that might overlap with the selected date
+        const { data: ongoingReservations, error: ongoingError } = await supabase
+          .from('kockabarlang_reservations')
+          .select('start_date, end_date, start_time, end_time')
+          .lte('start_date', selectedDate) // start_date <= selectedDate
+          .gte('end_date', selectedDate);  // end_date >= selectedDate
+
+        if (ongoingError) {
+          console.error('Error fetching ongoing reservations:', ongoingError);
+        }
+
+        const reserved: string[] = [];
+
+        // Process birthday party reservations
+        if (birthdayReservations) {
+          birthdayReservations.forEach(reservation => {
+            const timeStr = reservation.time;
+            if (typeof timeStr === 'string') {
+              reserved.push(timeStr.slice(0, 5)); // Extract HH:mm from HH:mm:ss
+            }
+          });
+        }
+
+        // Process ongoing reservations
+        if (ongoingReservations) {
+          ongoingReservations.forEach(reservation => {
+            const startTime = reservation.start_time;
+            const endTime = reservation.end_time;
+            
+            // Convert time strings to minutes for comparison
+            const timeToMinutes = (timeStr: string): number => {
+              const [hours, minutes] = timeStr.split(':').map(Number);
+              return hours * 60 + minutes;
+            };
+            
+            const startMinutes = timeToMinutes(startTime);
+            const endMinutes = timeToMinutes(endTime);
+            
+            // Check each time slot to see if it falls within the reservation period
+            timeSlots.forEach(slot => {
+              const slotMinutes = timeToMinutes(slot);
+              // Time slot is unavailable if it's >= start_time and < end_time
+              if (slotMinutes >= startMinutes && slotMinutes < endMinutes) {
+                if (!reserved.includes(slot)) {
+                  reserved.push(slot);
+                }
+              }
+            });
+          });
+        }
 
         setUnavailableSlots(reserved);
       } catch (error) {
