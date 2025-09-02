@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 interface TimeSelectionStepProps {
   selectedTime: string;
@@ -9,13 +11,50 @@ interface TimeSelectionStepProps {
 }
 
 export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: TimeSelectionStepProps) => {
+  const [unavailableSlots, setUnavailableSlots] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+
   const timeSlots = [
     "09:00", "10:00", "11:00", "12:00", "13:00", 
     "14:00", "15:00", "16:00", "17:00", "18:00"
   ];
 
-  // Mock availability - in real app this would come from database
-  const unavailableSlots = ["12:00", "15:00"]; // Example blocked slots
+  useEffect(() => {
+    const fetchReservations = async () => {
+      if (!selectedDate) return;
+      
+      setLoading(true);
+      try {
+        const { data: reservations, error } = await supabase
+          .from('kockabarlang_szulinapok')
+          .select('time')
+          .eq('date', selectedDate);
+
+        if (error) {
+          console.error('Error fetching reservations:', error);
+          return;
+        }
+
+        // Convert time objects to strings and extract reserved time slots
+        const reserved = reservations?.map(reservation => {
+          // Convert time format from database (HH:mm:ss) to display format (HH:mm)
+          const timeStr = reservation.time;
+          if (typeof timeStr === 'string') {
+            return timeStr.slice(0, 5); // Extract HH:mm from HH:mm:ss
+          }
+          return timeStr;
+        }) || [];
+
+        setUnavailableSlots(reserved);
+      } catch (error) {
+        console.error('Error fetching reservations:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReservations();
+  }, [selectedDate]);
 
   return (
     <div className="h-full flex flex-col p-4">
@@ -36,7 +75,12 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
 
       {/* Time Slots */}
       <div className="flex-1 overflow-y-auto">
-        <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
+        {loading ? (
+          <div className="text-center text-muted-foreground">
+            <p>Időpontok betöltése...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
           {timeSlots.map((time) => {
             const isUnavailable = unavailableSlots.includes(time);
             const isSelected = selectedTime === time;
@@ -66,7 +110,8 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
               </Button>
             );
           })}
-        </div>
+          </div>
+        )}
       </div>
 
       {selectedTime && (
