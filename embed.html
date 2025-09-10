@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kockabarlang Születésnapi Foglalás</title>
+    <meta name="description" content="Foglaljon születésnapi partit a Kockabarlangban egyszerűen és gyorsan!" />
+    
+    <!-- Embedding optimizations -->
+    <meta name="robots" content="noindex, nofollow" />
+    <style>
+      /* CSS Reset for iframe isolation */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      html, body {
+        height: 100%;
+        overflow-x: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      
+      #root {
+        height: 100%;
+        min-height: 600px;
+      }
+      
+      /* Loading state */
+      .embed-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 16px;
+      }
+      
+      .embed-loading::after {
+        content: '';
+        width: 20px;
+        height: 20px;
+        margin-left: 10px;
+        border: 2px solid #e2e8f0;
+        border-top: 2px solid #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Responsive iframe behavior */
+      @media (max-width: 768px) {
+        #root {
+          min-height: 500px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="embed-loading">Foglalási form betöltése</div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

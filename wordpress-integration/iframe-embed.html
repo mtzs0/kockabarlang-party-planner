@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kockabarlang Foglalási Form - WordPress Integráció</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .embed-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .responsive-iframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+            display: block;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        
+        .instructions {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .responsive-iframe {
+                height: 600px;
+            }
+            
+            body {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="embed-container">
+        <h1>🎂 Kockabarlang Születésnapi Foglalási Form</h1>
+        
+        <div class="instructions">
+            <h3>📋 WordPress Integrálási Útmutató</h3>
+            <p>Ez a foglalási form beágyazható WordPress oldalakba iframe használatával. Az alábbi kódot használja Elementor-ban vagy bármely WordPress szerkesztőben.</p>
+        </div>
+        
+        <h3>🖼️ Élő Előnézet:</h3>
+        <div class="iframe-container">
+            <iframe 
+                class="responsive-iframe"
+                src="https://yourusername.github.io/kockabarlang-party-planner/"
+                title="Kockabarlang Születésnapi Foglalás"
+                loading="lazy">
+            </iframe>
+        </div>
+        
+        <h3>📝 WordPress Beágyazási Kód (Elementor HTML Widget):</h3>
+        <div class="code-block">
+&lt;div style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;"&gt;
+  &lt;iframe 
+    src="https://yourusername.github.io/kockabarlang-party-planner/"
+    width="100%" 
+    height="700"
+    style="border: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+    title="Kockabarlang Születésnapi Foglalás"
+    loading="lazy"
+    allow="clipboard-write"&gt;
+  &lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;!-- Fallback for browsers that don't support iframes --&gt;
+&lt;noscript&gt;
+  &lt;p style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px;"&gt;
+    &lt;a href="https://yourusername.github.io/kockabarlang-party-planner/" 
+       target="_blank" 
+       style="color: #007cba; text-decoration: none; font-weight: bold;"&gt;
+      🎂 Születésnapi Foglalási Form Megnyitása
+    &lt;/a&gt;
+  &lt;/p&gt;
+&lt;/noscript&gt;
+        </div>
+        
+        <h3>📱 Reszponzív Verzió (Mobilbarát):</h3>
+        <div class="code-block">
+&lt;div style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;"&gt;
+  &lt;iframe 
+    src="https://yourusername.github.io/kockabarlang-party-planner/"
+    width="100%" 
+    height="700"
+    style="border: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-height: 600px;"
+    title="Kockabarlang Születésnapi Foglalás"
+    loading="lazy"
+    allow="clipboard-write"&gt;
+  &lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+@media (max-width: 768px) {
+  iframe[title="Kockabarlang Születésnapi Foglalás"] {
+    height: 600px !important;
+    min-height: 500px !important;
+  }
+}
+&lt;/style&gt;
+        </div>
+        
+        <div class="warning">
+            <h4>⚠️ Fontos Megjegyzések:</h4>
+            <ul>
+                <li>Cserélje le a <code>yourusername.github.io</code> részt a tényleges GitHub Pages URL-jére</li>
+                <li>A form automatikusan kapcsolódik a Supabase adatbázishoz</li>
+                <li>Győződjön meg róla, hogy a WordPress oldal HTTPS-t használ a biztonság érdekében</li>
+                <li>Az iframe magassága szükség szerint módosítható</li>
+            </ul>
+        </div>
+        
+        <h3>🔧 Elementor Integrálási Lépések:</h3>
+        <div class="instructions">
+            <ol>
+                <li>Nyissa meg az Elementor szerkesztőt</li>
+                <li>Húzzon egy <strong>HTML</strong> widgetet a kívánt helyre</li>
+                <li>Másolja be a fenti kódot a HTML tartalomba</li>
+                <li>Cserélje le a GitHub Pages URL-t a sajátjára</li>
+                <li>Mentse és publikálja az oldalt</li>
+            </ol>
+        </div>
+        
+        <h3>🎨 Testreszabási Lehetőségek:</h3>
+        <div class="code-block">
+/* CSS a külső konténer stílusához */
+.kockabarlang-booking-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.kockabarlang-booking-container iframe {
+  width: 100%;
+  height: 750px;
+  border: none;
+  border-radius: 8px;
+}
+        </div>
+    </div>
+</body>
+</html>
