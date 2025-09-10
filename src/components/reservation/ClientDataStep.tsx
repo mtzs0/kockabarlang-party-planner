@@ -189,7 +189,7 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {formData.childBirthday ? (
-                    format(new Date(formData.childBirthday), "yyyy. MMMM dd.")
+                    formData.childBirthday
                   ) : (
                     <span>Válassz dátumot</span>
                   )}
