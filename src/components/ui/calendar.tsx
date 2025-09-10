@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
+import { hu } from "date-fns/locale";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -20,9 +21,11 @@ function Calendar({
   );
 
   const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "Január", "Február", "Március", "Április", "Május", "Június",
+    "Július", "Augusztus", "Szeptember", "Október", "November", "December"
   ];
+
+  const hungarianDayNames = ["H", "K", "Sze", "Cs", "P", "Szo", "V"];
 
   const currentYear = currentMonth.getFullYear();
   const startYear = 1900;
@@ -79,6 +82,14 @@ function Calendar({
       className={cn("p-3", className)}
       month={currentMonth}
       onMonthChange={setCurrentMonth}
+      locale={hu}
+      weekStartsOn={1}
+      formatters={{
+        formatWeekdayName: (date) => {
+          const dayIndex = (date.getDay() + 6) % 7; // Convert Sunday=0 to Monday=0
+          return hungarianDayNames[dayIndex];
+        }
+      }}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
