@@ -48,11 +48,31 @@ export const MaskedDateInput = ({
     // Allow navigation keys
     if (['ArrowLeft', 'ArrowRight', 'Tab', 'Backspace', 'Delete'].includes(e.key)) {
       if (e.key === 'Backspace' && cursorPos > 0) {
-        const newValue = displayValue.slice(0, cursorPos - 1) + displayValue.slice(cursorPos);
+        e.preventDefault();
+        let newValue = displayValue;
+        let newCursorPos = cursorPos - 1;
+        
+        // Handle backspace in day section specially
+        if (cursorPos >= 9 && cursorPos <= 10) {
+          const dayPart = displayValue.slice(8, 10);
+          if (dayPart.length === 2 && cursorPos === 10) {
+            // Going from 2 digits to 1 digit - format as 0X
+            const firstDigit = dayPart[0];
+            newValue = displayValue.slice(0, 8) + '0' + firstDigit;
+            newCursorPos = 9;
+          } else if (cursorPos === 9) {
+            // Remove the single digit in day section
+            newValue = displayValue.slice(0, 8);
+            newCursorPos = 8;
+          }
+        } else {
+          // Normal backspace behavior for other sections
+          newValue = displayValue.slice(0, cursorPos - 1) + displayValue.slice(cursorPos);
+        }
+        
         setDisplayValue(newValue);
         updateDisplayAndValue(newValue);
-        updateCursor(cursorPos - 1);
-        e.preventDefault();
+        updateCursor(newCursorPos);
       }
       return;
     }
@@ -65,12 +85,35 @@ export const MaskedDateInput = ({
 
     e.preventDefault();
     
-    // Insert digit at cursor position
+    // Handle day section specially (positions 8-9)
+    if (cursorPos >= 8 && cursorPos < 10) {
+      const dayStart = 8;
+      const currentDayPart = displayValue.slice(dayStart, 10);
+      
+      if (cursorPos === 8) {
+        // First digit of day - format as 0X
+        const newDayValue = '0' + e.key;
+        const newValue = displayValue.slice(0, dayStart) + newDayValue;
+        setDisplayValue(newValue);
+        updateDisplayAndValue(newValue);
+        updateCursor(9);
+      } else if (cursorPos === 9 && currentDayPart.length === 2) {
+        // Second digit of day - replace the second digit
+        const newDayValue = currentDayPart[0] + e.key;
+        const newValue = displayValue.slice(0, dayStart) + newDayValue;
+        setDisplayValue(newValue);
+        updateDisplayAndValue(newValue);
+        updateCursor(10);
+      }
+      return;
+    }
+    
+    // Insert digit at cursor position for other sections
     const newValue = displayValue.slice(0, cursorPos) + e.key + displayValue.slice(cursorPos);
     setDisplayValue(newValue);
     updateDisplayAndValue(newValue);
 
-    // Auto-advance cursor logic
+    // Auto-advance cursor logic for year and month sections
     if (cursorPos < 4) {
       // Year section (positions 0-3)
       const newPos = cursorPos + 1;
@@ -106,9 +149,6 @@ export const MaskedDateInput = ({
       setDisplayValue(valueWithDash);
       updateDisplayAndValue(valueWithDash);
       updateCursor(9);
-    } else if (cursorPos >= 8 && cursorPos < 10) {
-      // Day section (positions 8-9) - cursor advances normally
-      updateCursor(cursorPos + 1);
     }
   };
 
