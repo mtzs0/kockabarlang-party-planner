@@ -4,7 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MaskedDateInput } from "@/components/ui/masked-date-input";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 interface ClientData {
@@ -43,8 +46,13 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
     }
   };
 
-  const handleBirthdayChange = (value: string) => {
-    handleInputChange('childBirthday', value);
+  const handleBirthdayChange = (date: Date | undefined) => {
+    if (date) {
+      const formattedDate = format(date, 'yyyy-MM-dd');
+      handleInputChange('childBirthday', formattedDate);
+    } else {
+      handleInputChange('childBirthday', '');
+    }
   };
 
   const validateForm = () => {
@@ -169,13 +177,35 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
           {/* Child Birthday */}
           <div>
             <Label htmlFor="childBirthday">Szülinapos gyermek születési dátuma *</Label>
-            <MaskedDateInput
-              id="childBirthday"
-              value={formData.childBirthday}
-              onChange={handleBirthdayChange}
-              placeholder="év-hónap-nap"
-              className={cn(errors.childBirthday && "border-destructive")}
-            />
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !formData.childBirthday && "text-muted-foreground",
+                    errors.childBirthday && "border-destructive"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {formData.childBirthday ? (
+                    format(new Date(formData.childBirthday), "yyyy. MMMM dd.")
+                  ) : (
+                    <span>Válassz dátumot</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={formData.childBirthday ? new Date(formData.childBirthday) : undefined}
+                  onSelect={handleBirthdayChange}
+                  disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
             {errors.childBirthday && (
               <p className="text-sm text-destructive mt-1">{errors.childBirthday}</p>
             )}
