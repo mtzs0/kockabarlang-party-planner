@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => ({
         manualChunks: {
           vendor: ['react', 'react-dom'],
           supabase: ['@supabase/supabase-js'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-calendar']
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-select']
         }
       }
     }
