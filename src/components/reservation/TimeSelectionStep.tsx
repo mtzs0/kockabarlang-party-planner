@@ -19,11 +19,44 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
     "14:00", "15:00", "16:00", "17:00", "18:00"
   ];
 
+  // Robust time format handling utility
+  const timeToMinutes = (timeStr: string): number => {
+    if (!timeStr || typeof timeStr !== 'string') {
+      console.warn('Invalid time string:', timeStr);
+      return 0;
+    }
+    
+    // Handle both "HH:mm" and "HH:mm:ss" formats
+    const timeParts = timeStr.split(':');
+    if (timeParts.length < 2) {
+      console.warn('Invalid time format:', timeStr);
+      return 0;
+    }
+    
+    const hours = parseInt(timeParts[0], 10);
+    const minutes = parseInt(timeParts[1], 10);
+    
+    if (isNaN(hours) || isNaN(minutes)) {
+      console.warn('Invalid time numbers:', timeStr);
+      return 0;
+    }
+    
+    return hours * 60 + minutes;
+  };
+
+  const formatTimeString = (timeStr: string): string => {
+    if (!timeStr) return '';
+    // Extract HH:mm from various time formats
+    return timeStr.slice(0, 5);
+  };
+
   useEffect(() => {
     const fetchReservations = async () => {
       if (!selectedDate) return;
       
       setLoading(true);
+      console.log('🔍 Fetching reservations for date:', selectedDate);
+      
       try {
         // Fetch birthday party reservations for the specific date
         const { data: birthdayReservations, error: birthdayError } = await supabase
@@ -32,46 +65,61 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
           .eq('date', selectedDate);
 
         if (birthdayError) {
-          console.error('Error fetching birthday reservations:', birthdayError);
+          console.error('❌ Error fetching birthday reservations:', birthdayError);
+          return;
         }
 
         // Fetch ongoing reservations that might overlap with the selected date
         const { data: ongoingReservations, error: ongoingError } = await supabase
           .from('kockabarlang_reservations')
-          .select('start_date, end_date, start_time, end_time')
+          .select('start_date, end_date, start_time, end_time, type')
           .lte('start_date', selectedDate) // start_date <= selectedDate
           .gte('end_date', selectedDate);  // end_date >= selectedDate
 
         if (ongoingError) {
-          console.error('Error fetching ongoing reservations:', ongoingError);
+          console.error('❌ Error fetching ongoing reservations:', ongoingError);
+          return;
         }
+
+        console.log('📅 Birthday reservations found:', birthdayReservations?.length || 0);
+        console.log('🏢 Ongoing reservations found:', ongoingReservations?.length || 0);
 
         const reserved: string[] = [];
 
         // Process birthday party reservations
-        if (birthdayReservations) {
+        if (birthdayReservations && birthdayReservations.length > 0) {
+          console.log('🎉 Processing birthday party reservations:', birthdayReservations);
           birthdayReservations.forEach(reservation => {
             const timeStr = reservation.time;
-            if (typeof timeStr === 'string') {
-              reserved.push(timeStr.slice(0, 5)); // Extract HH:mm from HH:mm:ss
+            if (timeStr) {
+              const formattedTime = formatTimeString(timeStr);
+              if (formattedTime && !reserved.includes(formattedTime)) {
+                reserved.push(formattedTime);
+                console.log('🚫 Birthday party blocked time:', formattedTime);
+              }
             }
           });
         }
 
         // Process ongoing reservations
-        if (ongoingReservations) {
+        if (ongoingReservations && ongoingReservations.length > 0) {
+          console.log('🏢 Processing ongoing reservations:', ongoingReservations);
           ongoingReservations.forEach(reservation => {
-            const startTime = reservation.start_time;
-            const endTime = reservation.end_time;
+            const { start_time, end_time, type } = reservation;
+            console.log(`📝 Processing ${type} reservation: ${start_time} - ${end_time}`);
             
-            // Convert time strings to minutes for comparison
-            const timeToMinutes = (timeStr: string): number => {
-              const [hours, minutes] = timeStr.split(':').map(Number);
-              return hours * 60 + minutes;
-            };
+            if (!start_time || !end_time) {
+              console.warn('⚠️ Invalid reservation times:', reservation);
+              return;
+            }
             
-            const startMinutes = timeToMinutes(startTime);
-            const endMinutes = timeToMinutes(endTime);
+            const startMinutes = timeToMinutes(start_time);
+            const endMinutes = timeToMinutes(end_time);
+            
+            if (startMinutes === 0 && endMinutes === 0) {
+              console.warn('⚠️ Could not parse reservation times:', start_time, end_time);
+              return;
+            }
             
             // Check each time slot to see if it falls within the reservation period
             timeSlots.forEach(slot => {
@@ -80,15 +128,19 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
               if (slotMinutes >= startMinutes && slotMinutes < endMinutes) {
                 if (!reserved.includes(slot)) {
                   reserved.push(slot);
+                  console.log(`🚫 ${type} blocked time slot:`, slot, `(${startMinutes}-${endMinutes} minutes)`);
                 }
               }
             });
           });
         }
 
+        console.log('🚫 Total unavailable slots:', reserved);
         setUnavailableSlots(reserved);
       } catch (error) {
-        console.error('Error fetching reservations:', error);
+        console.error('❌ Unexpected error fetching reservations:', error);
+        // Don't block the UI, just log the error
+        setUnavailableSlots([]);
       } finally {
         setLoading(false);
       }

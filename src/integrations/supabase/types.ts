@@ -298,6 +298,7 @@ export type Database = {
           location_id: string | null
           name: string
           rank: number
+          rank_name: string | null
           role: string
           service_ids: string[] | null
           updated_at: string
@@ -312,6 +313,7 @@ export type Database = {
           location_id?: string | null
           name: string
           rank?: number
+          rank_name?: string | null
           role: string
           service_ids?: string[] | null
           updated_at?: string
@@ -326,6 +328,7 @@ export type Database = {
           location_id?: string | null
           name?: string
           rank?: number
+          rank_name?: string | null
           role?: string
           service_ids?: string[] | null
           updated_at?: string
@@ -351,6 +354,7 @@ export type Database = {
           location: string
           name: string
           notes: string | null
+          payment_status: string
           phone: string
           service: string
           therapist: string
@@ -370,6 +374,7 @@ export type Database = {
           location: string
           name: string
           notes?: string | null
+          payment_status?: string
           phone: string
           service: string
           therapist: string
@@ -389,6 +394,7 @@ export type Database = {
           location?: string
           name?: string
           notes?: string | null
+          payment_status?: string
           phone?: string
           service?: string
           therapist?: string
