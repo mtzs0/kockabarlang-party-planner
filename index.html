@@ -36,7 +36,22 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Fallback content while loading -->
+      <div style="padding: 20px; text-align: center; color: #666;">
+        Loading Kockabarlang Party Planner...
+      </div>
+    </div>
     <script type="module" src="./src/main.tsx"></script>
+    
+    <!-- Fallback script if main module fails -->
+    <script>
+      setTimeout(() => {
+        const root = document.getElementById('root');
+        if (root && root.innerHTML.includes('Loading Kockabarlang')) {
+          root.innerHTML = '<div style="padding: 20px; color: red; text-align: center;">Failed to load application. Please check console for errors.</div>';
+        }
+      }, 5000);
+    </script>
   </body>
 </html>
