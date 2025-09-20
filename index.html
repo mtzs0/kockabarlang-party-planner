@@ -1,24 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>kockabarlang-party-planner</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+    <title>Kockabarlang Születésnapi Foglalás</title>
+    <meta name="description" content="Foglaljon születésnapi partit a Kockabarlangban egyszerűen és gyorsan!" />
+    <meta name="author" content="Kockabarlang" />
 
-    <meta property="og:title" content="kockabarlang-party-planner" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <meta property="og:title" content="Kockabarlang Születésnapi Foglalás" />
+    <meta property="og:description" content="Foglaljon születésnapi partit a Kockabarlangban egyszerűen és gyorsan!" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    
+    <!-- GitHub Pages SPA support -->
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // https://github.com/rafgraph/spa-github-pages
+      // Start Single Page Apps for GitHub Pages
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <!-- End Single Page Apps for GitHub Pages -->
   </head>
 
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>
