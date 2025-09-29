@@ -1,0 +1,20 @@
+-- Clear existing themes and add new ones
+DELETE FROM public.kockabarlang_szulinapthemes;
+
+-- Insert new themes
+INSERT INTO public.kockabarlang_szulinapthemes (name, description) VALUES
+('Minecraft', 'Kockákból épül a világ! Ragadj csákányt, és merülj el a Minecraft szögletes univerzumában. Építsd fel a saját birodalmadat LEGO® kockákból, nézz szembe a creeper-ekkel, és alkoss egyedi történeteket a kedvenc karaktereiddel.'),
+('LEGO® Ninjago', 'Légy te is a Spinjitzu mestere! Csatlakozz a bátor nindzsákhoz, és szállj szembe Lord Garmadon seregével. Ezen a pörgős születésnapon LEGO® kockákból építheted meg a nindzsák templomát és járműveit, hogy te is igazi hőssé válhass.'),
+('Star Wars', 'Az Erő legyen veled! Akár a Jedi Rend, akár a Birodalom oldalán állsz, ezen a születésnapon a Star Wars galaxisa vár rád. Építsd meg a legmenőbb csillaghajókat LEGO® elemekből, és vívd meg a saját csatáidat a jó és a rossz örök küzdelmében!'),
+('Harry Potter', 'Vedd elő a varázspálcádat, mert megérkezett a leveled a Roxfortból! Ezen a varázslatos születésnapon a Harry Potter világába repítünk, ahol bájitalokat keverhetsz és legendás jeleneteket építhetsz meg LEGO® kockákból. Csatlakozz hozzánk egy mágikus kalandra!'),
+('Jégvarázs', 'Elza, Anna és Olaf egyenesen Arendelle-ből érkeznek a születésnapodra! Engedd szabadjára a varázserődet, és építs velünk egy csodálatos jégpalotát LEGO® kockákból. Éld át újra a Jégvarázs mese legszebb pillanatait egy fagyos, mégis szívmelengető kalandban!'),
+('Bosszúállók', 'A világ sorsa a te kezedben van! Csatlakozz a Bosszúállók csapatához, és mentsd meg az emberiséget a gonosztól. Ezen a szülinapon a kedvenc szuperhőseiddel és LEGO® kockákkal szállhatsz harcba egy felejthetetlen kaland során.'),
+('Utazás az űrben', 'Vedd fel az űrruhád és indulhat a visszaszámlálás! Ezen a születésnapon a kozmosz végtelen távlatát fedezzük fel LEGO® kockák segítségével. Építs velünk űrhajót, kutass új bolygók után, és légy te a legbátrabb asztronauta a galaxisban!'),
+('LEGO® Elves', 'Lépj be egy titkos, varázslatos világba! Az elfek birodalma tele van mágikus lényekkel, rejtélyekkel és csodákkal. Csatlakozz Emily Jones-hoz és elfe barátaihoz egy varázslatos küldetésen, ahol a LEGO® kockák segítségével kel életre a fantázia.'),
+('Jurassic Park', 'Menekülj, jön a T-Rex! Vállalkozol egy expedícióra a dinoszauruszok elveszett világába? Építs velünk LEGO® kockákból ősi hüllőket és strapabíró terepjárókat, de légy óvatos, mert a Jurassic Parkban minden sarkon veszély leselkedik!'),
+('LEGO® Friends', 'Irány Heartlake City! Tölts egy szuper napot Mia, Emma, Andrea, Stephanie és Olivia társaságában! Ha imádod az állatokat, a barátságot és a kreatív építést, akkor ez a LEGO® Friends születésnapi program neked szól.'),
+('LEGO® City', 'Légy te a város hőse! LEGO® City nyüzsgő világában mindig történik valami izgalmas. Vegyél részt egy rendőrségi üldözésben, olts tüzet a bátor tűzoltókkal, vagy építsd fel a város legmagasabb felhőkarcolóját! Nálunk a LEGO® kockákból épült kalandok várnak.'),
+('Szellemirtók', 'Kit fogsz hívni? A Szellemirtókat! Ha nem riadsz vissza a kísértetektől és a zöld trutyitól, kapd fel a protonpuskádat, és csatlakozz hozzánk egy fergeteges szellemvadászatra. LEGO® kockákból építjük meg a felszerelést, hogy egyetlen kísértet se maradjon szabadon!'),
+('Verdák', 'Padlógáz és irány a versenypálya! Ha Villám McQueen és barátai a kedvenceid, és te is a sebesség megszállottja vagy, akkor ez a te születésnapod lesz. Építsd meg a leggyorsabb versenyautót LEGO® elemekből, és zsebeld be a Szelep Kupát!'),
+('LEGO® Nexo Knights', 'Lovagok, csatába! A futurisztikus Knighton királyságában a lovagok csúcstechnológiás pajzsokkal és fegyverekkel harcolnak. Töltsd le a Nexo erőket, és védd meg a birodalmat a gonosz Jestro ellen egy high-tech LEGO® kalandban!'),
+('Toy Story', 'A végtelenbe és tovább! Woody, Buzz és a többi játék csak arra vár, hogy csatlakozz hozzájuk egy fergeteges kalandra. Építsd meg velünk a Szobát LEGO® kockákból, és keltsd életre a Toy Story legizgalmasabb jeleneteit a saját születésnapodon.');
