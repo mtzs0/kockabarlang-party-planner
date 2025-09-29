@@ -14,7 +14,111 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      kockabarlang_reservations: {
+        Row: {
+          created_at: string | null
+          end_date: string
+          end_time: string
+          id: string
+          start_date: string
+          start_time: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          end_date: string
+          end_time: string
+          id?: string
+          start_date: string
+          start_time: string
+          type?: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          end_date?: string
+          end_time?: string
+          id?: string
+          start_date?: string
+          start_time?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      kockabarlang_szulinapok: {
+        Row: {
+          birthday: string
+          child: string
+          created_at: string | null
+          date: string
+          email: string
+          id: string
+          message: string | null
+          parent: string
+          phone: string
+          theme: string
+          time: string
+          updated_at: string | null
+        }
+        Insert: {
+          birthday: string
+          child: string
+          created_at?: string | null
+          date: string
+          email: string
+          id?: string
+          message?: string | null
+          parent: string
+          phone: string
+          theme: string
+          time: string
+          updated_at?: string | null
+        }
+        Update: {
+          birthday?: string
+          child?: string
+          created_at?: string | null
+          date?: string
+          email?: string
+          id?: string
+          message?: string | null
+          parent?: string
+          phone?: string
+          theme?: string
+          time?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      kockabarlang_szulinapthemes: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          image: string | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image?: string | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image?: string | null
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
