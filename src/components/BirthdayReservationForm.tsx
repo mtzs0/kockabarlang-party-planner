@@ -121,13 +121,13 @@ export const BirthdayReservationForm = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-4 bg-form-bg min-h-screen">
+    <div className="w-full max-w-2xl mx-auto p-4 bg-white min-h-screen">
       <Card 
-        className="h-[700px] flex flex-col shadow-[var(--shadow-form)] border-2 border-primary bg-background"
+        className="h-[700px] flex flex-col shadow-[var(--shadow-form)] border-2 border-primary bg-background rounded-lg overflow-hidden"
         style={{ height: '700px' }}
       >
         {/* Header with logo and title */}
-        <div className="p-6 border-b bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-t-lg">
+        <div className="p-6 border-b bg-gradient-to-r from-primary to-primary/90 text-primary-foreground">
           <h1 className="text-2xl font-bold text-center">Kockabarlang</h1>
           <p className="text-center text-primary-foreground/90 mt-1">Születésnapi foglalás</p>
         </div>
