@@ -20,21 +20,37 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
     setIsSubmitting(true);
     
     try {
+      const reservationData = {
+        date: data.date,
+        time: data.time,
+        theme: data.theme,
+        child: data.childName,
+        parent: data.parentName,
+        phone: data.phone,
+        email: data.email,
+        birthday: data.childBirthday,
+        message: data.message || null,
+      };
+
       const { error } = await supabase
         .from('kockabarlang_szulinapok')
-        .insert({
-          date: data.date,
-          time: data.time,
-          theme: data.theme,
-          child: data.childName,
-          parent: data.parentName,
-          phone: data.phone,
-          email: data.email,
-          birthday: data.childBirthday,
-          message: data.message || null,
-        });
+        .insert(reservationData);
 
       if (error) throw error;
+
+      // Send data to webhook
+      try {
+        await fetch('https://n.dakexpo.hu/webhook-test/a243f7a5-3363-474c-9d06-569a1361daf1', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(reservationData),
+        });
+      } catch (webhookError) {
+        console.error('Error sending to webhook:', webhookError);
+        // Don't fail the reservation if webhook fails
+      }
 
       onConfirm();
     } catch (error) {
