@@ -20,28 +20,89 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
     setIsSubmitting(true);
     
     try {
-      const { error } = await supabase
+      console.log('📝 Starting reservation submission...');
+      console.log('📊 Reservation data:', {
+        date: data.date,
+        timeRange: data.time,
+        theme: data.theme,
+        child: data.childName,
+        parent: data.parentName,
+        phone: data.phone,
+        email: data.email,
+        birthday: data.childBirthday,
+        hasMessage: !!data.message,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+      });
+
+      // Extract start time from range (e.g., "14:00-17:00" -> "14:00:00")
+      const startTime = data.time.includes('-') 
+        ? data.time.split('-')[0].trim() + ':00'
+        : data.time + ':00';
+      
+      console.log('⏰ Parsed time:', { original: data.time, parsed: startTime });
+
+      const reservationPayload = {
+        date: data.date,
+        time: startTime, // Use only the start time for database
+        theme: data.theme,
+        child: data.childName,
+        parent: data.parentName,
+        phone: data.phone,
+        email: data.email,
+        birthday: data.childBirthday,
+        message: data.message || null,
+      };
+
+      console.log('📤 Sending to database:', reservationPayload);
+
+      const { data: insertedData, error } = await supabase
         .from('kockabarlang_szulinapok')
-        .insert({
+        .insert(reservationPayload)
+        .select();
+
+      if (error) {
+        console.error('❌ Database error:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code,
+        });
+        throw error;
+      }
+
+      console.log('✅ Reservation created successfully:', insertedData);
+      onConfirm();
+    } catch (error: any) {
+      console.error('❌ Critical error during reservation:', {
+        error,
+        message: error?.message,
+        details: error?.details,
+        hint: error?.hint,
+        code: error?.code,
+        stack: error?.stack,
+        data: {
           date: data.date,
           time: data.time,
           theme: data.theme,
-          child: data.childName,
-          parent: data.parentName,
-          phone: data.phone,
-          email: data.email,
-          birthday: data.childBirthday,
-          message: data.message || null,
-        });
+          timestamp: new Date().toISOString(),
+        }
+      });
+      
+      // More specific error messages
+      let errorMessage = "A foglalás során hiba történt. Kérjük próbáld újra!";
+      
+      if (error?.message?.includes('time zone displacement')) {
+        errorMessage = "Időpont formátum hiba. Kérjük próbáld újra!";
+      } else if (error?.message?.includes('network')) {
+        errorMessage = "Hálózati hiba. Ellenőrizd az internetkapcsolatot!";
+      } else if (error?.code === 'PGRST301') {
+        errorMessage = "Adatbázis kapcsolati hiba. Kérjük próbáld újra!";
+      }
 
-      if (error) throw error;
-
-      onConfirm();
-    } catch (error) {
-      console.error('Error creating reservation:', error);
       toast({
         title: "Hiba történt",
-        description: "A foglalás során hiba történt. Kérjük próbáld újra!",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
