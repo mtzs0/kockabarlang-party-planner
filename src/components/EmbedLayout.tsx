@@ -13,7 +13,7 @@ export const EmbedLayout: React.FC<EmbedLayoutProps> = ({ children, className })
   return (
     <div 
       className={cn(
-        "min-h-screen bg-background text-foreground",
+        "min-h-screen bg-white text-foreground",
         // Apply iframe-specific styles when embedded
         isEmbedded && [
           "overflow-x-hidden",

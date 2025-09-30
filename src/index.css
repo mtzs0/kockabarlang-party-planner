@@ -40,7 +40,7 @@ All colors MUST be HSL.
     --radius: 0.75rem;
     
     /* Form specific colors */
-    --form-bg: 0 0% 98%;
+    --form-bg: 0 0% 100%;
     --step-inactive: 0 0% 85%;
     --step-active: 213 71% 27%;
     --step-completed: 52 100% 52%;
