@@ -241,7 +241,7 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
                 disabled={isUnavailable}
                 onClick={() => onTimeSelect(timeRange)}
                 className={cn(
-                  "h-16 flex flex-col items-center justify-center transition-all duration-200 p-4",
+                  "h-20 flex flex-col items-center justify-center transition-all duration-200 p-4",
                   "hover:scale-105 active:scale-95",
                   {
                     "bg-primary text-primary-foreground shadow-lg": isSelected,
