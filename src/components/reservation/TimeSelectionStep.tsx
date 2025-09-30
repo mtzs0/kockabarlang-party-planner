@@ -12,12 +12,8 @@ interface TimeSelectionStepProps {
 
 export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: TimeSelectionStepProps) => {
   const [unavailableSlots, setUnavailableSlots] = useState<string[]>([]);
+  const [timeSlots, setTimeSlots] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const timeSlots = [
-    "09:00", "10:00", "11:00", "12:00", "13:00", 
-    "14:00", "15:00", "16:00", "17:00", "18:00"
-  ];
 
   // Robust time format handling utility
   const timeToMinutes = (timeStr: string): number => {
@@ -50,9 +46,64 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
     return timeStr.slice(0, 5);
   };
 
+  // Helper function to check if time ranges overlap
+  const isTimeRangeOverlapping = (range1Start: string, range1End: string, range2Start: string, range2End: string): boolean => {
+    const range1StartMin = timeToMinutes(range1Start);
+    const range1EndMin = timeToMinutes(range1End);
+    const range2StartMin = timeToMinutes(range2Start);
+    const range2EndMin = timeToMinutes(range2End);
+    
+    return range1StartMin < range2EndMin && range1EndMin > range2StartMin;
+  };
+
+  // Helper function to parse time range string (e.g., "10:00-13:00")
+  const parseTimeRange = (timeRange: string): { start: string; end: string } | null => {
+    const parts = timeRange.split('-');
+    if (parts.length === 2) {
+      return { start: parts[0].trim(), end: parts[1].trim() };
+    }
+    return null;
+  };
+
+  // Fetch available time slots based on the day of the week
+  useEffect(() => {
+    const fetchTimeSlots = async () => {
+      if (!selectedDate) return;
+      
+      // Get the day of the week from the selected date
+      const date = new Date(selectedDate + 'T00:00:00');
+      const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+      
+      console.log('🔍 Fetching time slots for day:', dayOfWeek);
+      
+      try {
+        const { data: timeSlotsData, error } = await supabase
+          .from('timeslots')
+          .select('timeslot')
+          .eq('day', dayOfWeek);
+
+        if (error) {
+          console.error('❌ Error fetching time slots:', error);
+          setTimeSlots([]);
+          return;
+        }
+
+        const slots = timeSlotsData?.map(slot => slot.timeslot) || [];
+        console.log('📅 Available time slots for', dayOfWeek, ':', slots);
+        setTimeSlots(slots);
+      } catch (error) {
+        console.error('❌ Unexpected error fetching time slots:', error);
+        setTimeSlots([]);
+      }
+    };
+
+    fetchTimeSlots();
+  }, [selectedDate]);
+
+  // Fetch reservations and check availability
   useEffect(() => {
     const fetchReservations = async () => {
-      if (!selectedDate) return;
+      if (!selectedDate || timeSlots.length === 0) return;
       
       setLoading(true);
       console.log('🔍 Fetching reservations for date:', selectedDate);
@@ -86,22 +137,34 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
 
         const reserved: string[] = [];
 
-        // Process birthday party reservations
+        // Process birthday party reservations (these block exact time slots)
         if (birthdayReservations && birthdayReservations.length > 0) {
           console.log('🎉 Processing birthday party reservations:', birthdayReservations);
           birthdayReservations.forEach(reservation => {
             const timeStr = reservation.time;
             if (timeStr) {
               const formattedTime = formatTimeString(timeStr);
-              if (formattedTime && !reserved.includes(formattedTime)) {
-                reserved.push(formattedTime);
-                console.log('🚫 Birthday party blocked time:', formattedTime);
-              }
+              // Find which time range this birthday party falls into
+              timeSlots.forEach(slot => {
+                const range = parseTimeRange(slot);
+                if (range) {
+                  const timeMinutes = timeToMinutes(formattedTime);
+                  const rangeStartMinutes = timeToMinutes(range.start);
+                  const rangeEndMinutes = timeToMinutes(range.end);
+                  
+                  if (timeMinutes >= rangeStartMinutes && timeMinutes < rangeEndMinutes) {
+                    if (!reserved.includes(slot)) {
+                      reserved.push(slot);
+                      console.log('🚫 Birthday party blocked time range:', slot, 'due to reservation at', formattedTime);
+                    }
+                  }
+                }
+              });
             }
           });
         }
 
-        // Process ongoing reservations
+        // Process ongoing reservations (these can overlap with time ranges)
         if (ongoingReservations && ongoingReservations.length > 0) {
           console.log('🏢 Processing ongoing reservations:', ongoingReservations);
           ongoingReservations.forEach(reservation => {
@@ -113,22 +176,16 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
               return;
             }
             
-            const startMinutes = timeToMinutes(start_time);
-            const endMinutes = timeToMinutes(end_time);
+            const startTime = formatTimeString(start_time);
+            const endTime = formatTimeString(end_time);
             
-            if (startMinutes === 0 && endMinutes === 0) {
-              console.warn('⚠️ Could not parse reservation times:', start_time, end_time);
-              return;
-            }
-            
-            // Check each time slot to see if it falls within the reservation period
+            // Check each time slot range to see if it overlaps with the reservation
             timeSlots.forEach(slot => {
-              const slotMinutes = timeToMinutes(slot);
-              // Time slot is unavailable if it's >= start_time and < end_time
-              if (slotMinutes >= startMinutes && slotMinutes < endMinutes) {
+              const range = parseTimeRange(slot);
+              if (range && isTimeRangeOverlapping(range.start, range.end, startTime, endTime)) {
                 if (!reserved.includes(slot)) {
                   reserved.push(slot);
-                  console.log(`🚫 ${type} blocked time slot:`, slot, `(${startMinutes}-${endMinutes} minutes)`);
+                  console.log(`🚫 ${type} blocked time range:`, slot, `due to overlap with ${startTime}-${endTime}`);
                 }
               }
             });
@@ -139,7 +196,6 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
         setUnavailableSlots(reserved);
       } catch (error) {
         console.error('❌ Unexpected error fetching reservations:', error);
-        // Don't block the UI, just log the error
         setUnavailableSlots([]);
       } finally {
         setLoading(false);
@@ -147,7 +203,7 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
     };
 
     fetchReservations();
-  }, [selectedDate]);
+  }, [selectedDate, timeSlots]);
 
   return (
     <div className="h-full flex flex-col p-4">
@@ -173,19 +229,19 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
             <p>Időpontok betöltése...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
-          {timeSlots.map((time) => {
-            const isUnavailable = unavailableSlots.includes(time);
-            const isSelected = selectedTime === time;
+          <div className="grid grid-cols-1 gap-3 max-w-lg mx-auto">
+          {timeSlots.map((timeRange) => {
+            const isUnavailable = unavailableSlots.includes(timeRange);
+            const isSelected = selectedTime === timeRange;
             
             return (
               <Button
-                key={time}
+                key={timeRange}
                 variant={isSelected ? "default" : "outline"}
                 disabled={isUnavailable}
-                onClick={() => onTimeSelect(time)}
+                onClick={() => onTimeSelect(timeRange)}
                 className={cn(
-                  "h-16 flex flex-col items-center justify-center transition-all duration-200 p-2",
+                  "h-16 flex flex-col items-center justify-center transition-all duration-200 p-4",
                   "hover:scale-105 active:scale-95",
                   {
                     "bg-primary text-primary-foreground shadow-lg": isSelected,
@@ -194,10 +250,10 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
                 )}
               >
                 <div className="flex flex-col items-center justify-center h-full space-y-1">
-                  <Clock className="w-3 h-3 flex-shrink-0" />
-                  <span className="text-sm font-semibold">{time}</span>
+                  <Clock className="w-4 h-4 flex-shrink-0" />
+                  <span className="text-lg font-semibold">{timeRange}</span>
                   <span className="text-xs h-4 flex items-center justify-center">
-                    {isUnavailable ? "Foglalt" : ""}
+                    {isUnavailable ? "Foglalt" : "Elérhető"}
                   </span>
                 </div>
               </Button>
