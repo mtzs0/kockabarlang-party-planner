@@ -20,47 +20,21 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
     setIsSubmitting(true);
     
     try {
-      // Extract start time from time range (e.g., "14:00-17:00" -> "14:00:00")
-      const startTime = data.time.includes('-') 
-        ? data.time.split('-')[0].trim() + ':00'
-        : data.time + ':00';
-
-      const reservationData = {
-        date: data.date,
-        time: startTime,
-        theme: data.theme,
-        child: data.childName,
-        parent: data.parentName,
-        phone: data.phone,
-        email: data.email,
-        birthday: data.childBirthday,
-        message: data.message || null,
-      };
-
-      const webhookData = {
-        ...reservationData,
-        time: data.time, // Send original time range to webhook
-      };
-
       const { error } = await supabase
         .from('kockabarlang_szulinapok')
-        .insert(reservationData);
+        .insert({
+          date: data.date,
+          time: data.time,
+          theme: data.theme,
+          child: data.childName,
+          parent: data.parentName,
+          phone: data.phone,
+          email: data.email,
+          birthday: data.childBirthday,
+          message: data.message || null,
+        });
 
       if (error) throw error;
-
-      // Send data to webhook
-      try {
-        await fetch('https://n.dakexpo.hu/webhook-test/a243f7a5-3363-474c-9d06-569a1361daf1', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(webhookData),
-        });
-      } catch (webhookError) {
-        console.error('Error sending to webhook:', webhookError);
-        // Don't fail the reservation if webhook fails
-      }
 
       onConfirm();
     } catch (error) {
