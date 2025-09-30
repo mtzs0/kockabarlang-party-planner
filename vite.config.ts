@@ -15,6 +15,10 @@ export default defineConfig(({ mode }) => ({
     assetsDir: 'assets',
     sourcemap: false,
     rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+        embed: path.resolve(__dirname, 'embed.html')
+      },
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],

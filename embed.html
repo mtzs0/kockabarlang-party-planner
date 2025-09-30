@@ -66,6 +66,26 @@
     <div id="root">
       <div class="embed-loading">Foglalási form betöltése</div>
     </div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" crossorigin src="./src/main.tsx"></script>
+    
+    <!-- Fallback error handler -->
+    <script>
+      window.addEventListener('error', function(e) {
+        console.error('Loading error:', e);
+        const root = document.getElementById('root');
+        if (root && root.innerHTML.includes('embed-loading')) {
+          root.innerHTML = '<div style="padding: 20px; text-align: center; color: #e11d48;">Hiba történt a form betöltésekor. Kérjük, frissítse az oldalt.</div>';
+        }
+      });
+      
+      // Timeout fallback
+      setTimeout(function() {
+        const root = document.getElementById('root');
+        if (root && root.innerHTML.includes('embed-loading')) {
+          console.error('App failed to load within timeout');
+          root.innerHTML = '<div style="padding: 20px; text-align: center; color: #e11d48;">A form betöltése túl sokáig tart. Kérjük, ellenőrizze az internetkapcsolatot és frissítse az oldalt.</div>';
+        }
+      }, 10000);
+    </script>
   </body>
 </html>
