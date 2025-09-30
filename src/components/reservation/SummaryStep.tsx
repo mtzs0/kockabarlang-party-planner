@@ -20,9 +20,14 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
     setIsSubmitting(true);
     
     try {
+      // Extract start time from time range (e.g., "14:00-17:00" -> "14:00:00")
+      const startTime = data.time.includes('-') 
+        ? data.time.split('-')[0].trim() + ':00'
+        : data.time + ':00';
+
       const reservationData = {
         date: data.date,
-        time: data.time,
+        time: startTime,
         theme: data.theme,
         child: data.childName,
         parent: data.parentName,
@@ -30,6 +35,11 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
         email: data.email,
         birthday: data.childBirthday,
         message: data.message || null,
+      };
+
+      const webhookData = {
+        ...reservationData,
+        time: data.time, // Send original time range to webhook
       };
 
       const { error } = await supabase
@@ -45,7 +55,7 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(reservationData),
+          body: JSON.stringify(webhookData),
         });
       } catch (webhookError) {
         console.error('Error sending to webhook:', webhookError);
