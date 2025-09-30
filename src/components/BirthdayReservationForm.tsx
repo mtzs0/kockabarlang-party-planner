@@ -123,7 +123,7 @@ export const BirthdayReservationForm = () => {
   return (
     <div className="w-full max-w-2xl mx-auto p-4 bg-form-bg min-h-screen">
       <Card 
-        className="h-[700px] flex flex-col shadow-[var(--shadow-form)] border-0 bg-background"
+        className="h-[700px] flex flex-col shadow-[var(--shadow-form)] border-2 border-primary bg-background"
         style={{ height: '700px' }}
       >
         {/* Header with logo and title */}
