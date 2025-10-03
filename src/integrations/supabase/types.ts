@@ -55,6 +55,7 @@ export type Database = {
           date: string
           email: string
           id: string
+          invoice: string | null
           message: string | null
           parent: string
           phone: string
@@ -69,6 +70,7 @@ export type Database = {
           date: string
           email: string
           id?: string
+          invoice?: string | null
           message?: string | null
           parent: string
           phone: string
@@ -83,6 +85,7 @@ export type Database = {
           date?: string
           email?: string
           id?: string
+          invoice?: string | null
           message?: string | null
           parent?: string
           phone?: string

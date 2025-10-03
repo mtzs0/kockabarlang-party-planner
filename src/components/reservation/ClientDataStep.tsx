@@ -17,6 +17,7 @@ interface ClientData {
   phone: string;
   email: string;
   message: string;
+  invoice: string;
   acceptedPolicy: boolean;
 }
 
@@ -27,6 +28,7 @@ interface ClientDataErrors {
   phone?: string;
   email?: string;
   message?: string;
+  invoice?: string;
   acceptedPolicy?: string;
 }
 
@@ -250,6 +252,17 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
               value={formData.message}
               onChange={(e) => handleInputChange('message', e.target.value)}
               placeholder="Itt írhatsz nekünk bármilyen különleges kérést..."
+            />
+          </div>
+
+          {/* Invoice Address */}
+          <div>
+            <Label htmlFor="invoice">Számlázási cím</Label>
+            <Input
+              id="invoice"
+              value={formData.invoice}
+              onChange={(e) => handleInputChange('invoice', e.target.value)}
+              placeholder="Számlázási cím (opcionális)"
             />
           </div>
 

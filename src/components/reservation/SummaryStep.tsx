@@ -52,6 +52,7 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
         email: data.email,
         birthday: data.childBirthday,
         message: data.message || null,
+        invoice: data.invoice || null,
       };
 
       console.log('📤 Sending to database:', reservationPayload);
@@ -222,6 +223,17 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
                 Üzenet
               </h3>
               <p className="text-sm text-muted-foreground">{data.message}</p>
+            </Card>
+          )}
+
+          {/* Invoice Address */}
+          {data.invoice && (
+            <Card className="p-4">
+              <h3 className="font-semibold mb-3 flex items-center">
+                <MessageSquare className="w-4 h-4 mr-2 text-primary" />
+                Számlázási cím
+              </h3>
+              <p className="text-sm text-muted-foreground">{data.invoice}</p>
             </Card>
           )}
 

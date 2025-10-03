@@ -18,6 +18,7 @@ export interface ReservationData {
   phone: string;
   email: string;
   message: string;
+  invoice: string;
   acceptedPolicy: boolean;
 }
 
@@ -42,6 +43,7 @@ export const BirthdayReservationForm = () => {
     phone: "",
     email: "",
     message: "",
+    invoice: "",
     acceptedPolicy: false,
   });
 
@@ -97,6 +99,7 @@ export const BirthdayReservationForm = () => {
               phone: reservationData.phone,
               email: reservationData.email,
               message: reservationData.message,
+              invoice: reservationData.invoice,
               acceptedPolicy: reservationData.acceptedPolicy,
             }}
             onDataSubmit={(data) => handleStepComplete(4, data)}
