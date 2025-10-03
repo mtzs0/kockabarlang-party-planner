@@ -35,16 +35,14 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
         userAgent: navigator.userAgent,
       });
 
-      // Extract start time from range (e.g., "14:00-17:00" -> "14:00:00")
-      const startTime = data.time.includes('-') 
-        ? data.time.split('-')[0].trim() + ':00'
-        : data.time + ':00';
+      // Save the time bracket without seconds (e.g., "14:00-17:00")
+      const timeValue = data.time;
       
-      console.log('⏰ Parsed time:', { original: data.time, parsed: startTime });
+      console.log('⏰ Saving time:', { original: data.time, saved: timeValue });
 
       const reservationPayload = {
         date: data.date,
-        time: startTime, // Use only the start time for database
+        time: timeValue, // Save the full time bracket
         theme: data.theme,
         child: data.childName,
         parent: data.parentName,
