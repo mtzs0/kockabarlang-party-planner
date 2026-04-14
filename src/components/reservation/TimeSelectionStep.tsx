@@ -111,7 +111,7 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
       try {
         // Fetch birthday party reservations for the specific date
         const { data: birthdayReservations, error: birthdayError } = await supabase
-          .from('kockabarlang_szulinapok')
+          .from('kockabarlang_szulinapok_availability' as any)
           .select('time')
           .eq('date', selectedDate);
 
