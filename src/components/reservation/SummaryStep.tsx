@@ -69,7 +69,7 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
         throw error;
       }
 
-      console.log('✅ Reservation created successfully:', insertedData);
+      console.log('✅ Reservation created successfully');
       onConfirm();
     } catch (error: any) {
       console.error('❌ Critical error during reservation:', {
