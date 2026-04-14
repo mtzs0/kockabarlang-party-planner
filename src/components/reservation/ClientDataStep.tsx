@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 
 interface ClientData {
   parentName: string;
+  gyerekekSzama: string;
   childName: string;
   childBirthday: string;
   phone: string;
@@ -23,6 +24,7 @@ interface ClientData {
 
 interface ClientDataErrors {
   parentName?: string;
+  gyerekekSzama?: string;
   childName?: string;
   childBirthday?: string;
   phone?: string;
