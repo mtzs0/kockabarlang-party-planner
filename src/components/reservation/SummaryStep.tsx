@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, Clock, Palette, User, Phone, Mail, MessageSquare, CheckCircle } from "lucide-react";
+import { Calendar, Clock, Palette, User, Phone, Mail, MessageSquare, CheckCircle, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { ReservationData } from "../BirthdayReservationForm";
@@ -51,6 +51,7 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
         birthday: data.childBirthday,
         message: data.message || null,
         invoice: data.invoice || null,
+        gyerekek_szama: data.gyerekekSzama || null,
       };
 
       console.log('📤 Sending to database:', reservationPayload);
@@ -174,6 +175,12 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
                 <User className="w-4 h-4 mr-2 text-muted-foreground" />
                 <span className="text-sm font-medium">Szülő neve:</span>
                 <span className="ml-auto text-sm">{data.parentName}</span>
+              </div>
+
+              <div className="flex items-center">
+                <Users className="w-4 h-4 mr-2 text-muted-foreground" />
+                <span className="text-sm font-medium">Létszám:</span>
+                <span className="ml-auto text-sm">{data.gyerekekSzama} gyerek</span>
               </div>
               
               <div className="flex items-center">

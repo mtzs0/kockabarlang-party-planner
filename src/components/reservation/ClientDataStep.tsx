@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 
 interface ClientData {
   parentName: string;
+  gyerekekSzama: string;
   childName: string;
   childBirthday: string;
   phone: string;
@@ -23,6 +24,7 @@ interface ClientData {
 
 interface ClientDataErrors {
   parentName?: string;
+  gyerekekSzama?: string;
   childName?: string;
   childBirthday?: string;
   phone?: string;
@@ -62,6 +64,10 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
 
     if (!formData.parentName.trim()) {
       newErrors.parentName = "A szülő neve kötelező";
+    }
+
+    if (!formData.gyerekekSzama.trim()) {
+      newErrors.gyerekekSzama = "A tervezett létszám kötelező";
     }
 
     if (!formData.childName.trim()) {
@@ -159,6 +165,21 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
             />
             {errors.parentName && (
               <p className="text-sm text-destructive mt-1">{errors.parentName}</p>
+            )}
+          </div>
+
+          {/* Gyerekek száma */}
+          <div>
+            <Label htmlFor="gyerekekSzama">Tervezett létszám (résztvevő gyerekek) *</Label>
+            <Input
+              id="gyerekekSzama"
+              value={formData.gyerekekSzama}
+              onChange={(e) => handleInputChange('gyerekekSzama', e.target.value)}
+              className={cn(errors.gyerekekSzama && "border-destructive")}
+              placeholder="pl. 10"
+            />
+            {errors.gyerekekSzama && (
+              <p className="text-sm text-destructive mt-1">{errors.gyerekekSzama}</p>
             )}
           </div>
 
