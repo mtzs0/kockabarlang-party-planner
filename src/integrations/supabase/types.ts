@@ -163,7 +163,24 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      kockabarlang_szulinapok_availability: {
+        Row: {
+          date: string | null
+          id: string | null
+          time: string | null
+        }
+        Insert: {
+          date?: string | null
+          id?: string | null
+          time?: string | null
+        }
+        Update: {
+          date?: string | null
+          id?: string | null
+          time?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never

@@ -55,10 +55,9 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
 
       console.log('📤 Sending to database:', reservationPayload);
 
-      const { data: insertedData, error } = await supabase
+      const { error } = await supabase
         .from('kockabarlang_szulinapok')
-        .insert(reservationPayload)
-        .select();
+        .insert(reservationPayload);
 
       if (error) {
         console.error('❌ Database error:', {
@@ -70,7 +69,7 @@ export const SummaryStep = ({ data, onConfirm }: SummaryStepProps) => {
         throw error;
       }
 
-      console.log('✅ Reservation created successfully:', insertedData);
+      console.log('✅ Reservation created successfully');
       onConfirm();
     } catch (error: any) {
       console.error('❌ Critical error during reservation:', {

@@ -111,7 +111,7 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
       try {
         // Fetch birthday party reservations for the specific date
         const { data: birthdayReservations, error: birthdayError } = await supabase
-          .from('kockabarlang_szulinapok')
+          .from('kockabarlang_szulinapok_availability' as any)
           .select('time')
           .eq('date', selectedDate);
 
@@ -140,7 +140,7 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
         // Process birthday party reservations (these block exact time slots)
         if (birthdayReservations && birthdayReservations.length > 0) {
           console.log('🎉 Processing birthday party reservations:', birthdayReservations);
-          birthdayReservations.forEach(reservation => {
+          (birthdayReservations as any[]).forEach((reservation: any) => {
             const timeStr = reservation.time;
             if (timeStr) {
               const formattedTime = formatTimeString(timeStr);
