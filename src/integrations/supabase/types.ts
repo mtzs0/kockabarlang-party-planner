@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      activation: {
+        Row: {
+          created_at: string
+          id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+        }
+        Relationships: []
+      }
       kockabarlang_reservations: {
         Row: {
           created_at: string | null
@@ -49,47 +64,47 @@ export type Database = {
       }
       kockabarlang_szulinapok: {
         Row: {
-          birthday: string
-          child: string
+          birthday: string | null
+          child: string | null
           created_at: string | null
           date: string
-          email: string
+          email: string | null
           id: string
           invoice: string | null
           message: string | null
-          parent: string
-          phone: string
-          theme: string
+          parent: string | null
+          phone: string | null
+          theme: string | null
           time: string
           updated_at: string | null
         }
         Insert: {
-          birthday: string
-          child: string
+          birthday?: string | null
+          child?: string | null
           created_at?: string | null
           date: string
-          email: string
+          email?: string | null
           id?: string
           invoice?: string | null
           message?: string | null
-          parent: string
-          phone: string
-          theme: string
+          parent?: string | null
+          phone?: string | null
+          theme?: string | null
           time: string
           updated_at?: string | null
         }
         Update: {
-          birthday?: string
-          child?: string
+          birthday?: string | null
+          child?: string | null
           created_at?: string | null
           date?: string
-          email?: string
+          email?: string | null
           id?: string
           invoice?: string | null
           message?: string | null
-          parent?: string
-          phone?: string
-          theme?: string
+          parent?: string | null
+          phone?: string | null
+          theme?: string | null
           time?: string
           updated_at?: string | null
         }
