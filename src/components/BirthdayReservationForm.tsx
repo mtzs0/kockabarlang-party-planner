@@ -13,6 +13,7 @@ export interface ReservationData {
   time: string;
   theme: string;
   parentName: string;
+  gyerekekSzama: string;
   childName: string;
   childBirthday: string;
   phone: string;
@@ -38,6 +39,7 @@ export const BirthdayReservationForm = () => {
     time: "",
     theme: "",
     parentName: "",
+    gyerekekSzama: "",
     childName: "",
     childBirthday: "",
     phone: "",
@@ -94,6 +96,7 @@ export const BirthdayReservationForm = () => {
           <ClientDataStep
             data={{
               parentName: reservationData.parentName,
+              gyerekekSzama: reservationData.gyerekekSzama,
               childName: reservationData.childName,
               childBirthday: reservationData.childBirthday,
               phone: reservationData.phone,
