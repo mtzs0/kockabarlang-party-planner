@@ -15,7 +15,7 @@ export const AdminPanel = ({ onLogout }: { onLogout: () => void }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-background overflow-auto">
+    <div className="fixed inset-0 z-40 bg-background overflow-auto">
       <div className="max-w-6xl mx-auto p-6">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold">Admin</h1>
