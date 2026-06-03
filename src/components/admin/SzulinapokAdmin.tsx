@@ -119,18 +119,17 @@ export const SzulinapokAdmin = () => {
             </TableHeader>
             <TableBody>
               {rows.map((r) => (
-                <TableRow
-                  key={r.id}
-                  className="cursor-pointer"
-                  onClick={() => setEditing(r)}
-                >
+                <TableRow key={r.id}>
                   <TableCell>{r.date}</TableCell>
                   <TableCell>{r.time}</TableCell>
                   <TableCell>{r.parent}</TableCell>
                   <TableCell>{r.child}</TableCell>
                   <TableCell>{r.phone}</TableCell>
                   <TableCell>{r.email}</TableCell>
-                  <TableCell onClick={(e) => e.stopPropagation()}>
+                  <TableCell className="flex gap-2 justify-end">
+                    <Button size="sm" variant="outline" onClick={() => setEditing(r)}>
+                      Szerkeszt
+                    </Button>
                     <Button
                       size="sm"
                       variant="destructive"
