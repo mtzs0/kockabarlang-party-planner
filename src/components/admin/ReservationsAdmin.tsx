@@ -121,26 +121,29 @@ export const ReservationsAdmin = () => {
             </TableHeader>
             <TableBody>
               {rows.map((r) => (
-                <TableRow
-                  key={r.id}
-                  className="cursor-pointer"
-                  onClick={() =>
-                    setEditing({
-                      id: r.id,
-                      start_date: r.start_date,
-                      end_date: r.end_date,
-                      start_time: (r.start_time || "").slice(0, 5),
-                      end_time: (r.end_time || "").slice(0, 5),
-                      type: r.type || "blocked",
-                    })
-                  }
-                >
+                <TableRow key={r.id}>
                   <TableCell>{r.start_date}</TableCell>
                   <TableCell>{r.end_date}</TableCell>
                   <TableCell>{r.start_time}</TableCell>
                   <TableCell>{r.end_time}</TableCell>
                   <TableCell>{r.type}</TableCell>
-                  <TableCell onClick={(e) => e.stopPropagation()}>
+                  <TableCell className="flex gap-2 justify-end">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        setEditing({
+                          id: r.id,
+                          start_date: r.start_date,
+                          end_date: r.end_date,
+                          start_time: (r.start_time || "").slice(0, 5),
+                          end_time: (r.end_time || "").slice(0, 5),
+                          type: r.type || "blocked",
+                        })
+                      }
+                    >
+                      Szerkeszt
+                    </Button>
                     <Button
                       size="sm"
                       variant="destructive"
