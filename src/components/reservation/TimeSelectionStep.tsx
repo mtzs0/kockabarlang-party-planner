@@ -88,7 +88,13 @@ export const TimeSelectionStep = ({ selectedTime, selectedDate, onTimeSelect }: 
           return;
         }
 
-        const slots = timeSlotsData?.map(slot => slot.timeslot) || [];
+        const slots = (timeSlotsData?.map(slot => slot.timeslot) || [])
+          .sort((a, b) => {
+            const rangeA = parseTimeRange(a);
+            const rangeB = parseTimeRange(b);
+            if (!rangeA || !rangeB) return 0;
+            return timeToMinutes(rangeA.start) - timeToMinutes(rangeB.start);
+          });
         console.log('📅 Available time slots for', dayOfWeek, ':', slots);
         setTimeSlots(slots);
       } catch (error) {
