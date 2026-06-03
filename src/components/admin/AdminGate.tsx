@@ -55,31 +55,30 @@ export const AdminGate = () => {
     }
   };
 
-  if (loggedIn) {
-    return <AdminPanel onLogout={() => setLoggedIn(false)} />;
-  }
-
   return (
-    <Dialog open={promptOpen} onOpenChange={setPromptOpen}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Admin belépés</DialogTitle>
-          <DialogDescription>Add meg az admin jelszót.</DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <Input
-            type="password"
-            autoFocus
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Jelszó"
-          />
-          {error && <p className="text-sm text-destructive">{error}</p>}
-          <Button type="submit" disabled={loading || !password} className="w-full">
-            {loading ? "Ellenőrzés..." : "Belépés"}
-          </Button>
-        </form>
-      </DialogContent>
-    </Dialog>
+    <>
+      {loggedIn && <AdminPanel onLogout={() => setLoggedIn(false)} />}
+      <Dialog open={promptOpen && !loggedIn} onOpenChange={setPromptOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Admin belépés</DialogTitle>
+            <DialogDescription>Add meg az admin jelszót.</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <Input
+              type="password"
+              autoFocus
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Jelszó"
+            />
+            {error && <p className="text-sm text-destructive">{error}</p>}
+            <Button type="submit" disabled={loading || !password} className="w-full">
+              {loading ? "Ellenőrzés..." : "Belépés"}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
