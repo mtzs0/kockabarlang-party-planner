@@ -96,6 +96,10 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
       newErrors.phone = "Helyes formátum: +36 XX XXX XXXX";
     }
 
+    if (!formData.invoice.trim()) {
+      newErrors.invoice = "A számlázási cím kötelező";
+    }
+
     if (!formData.email.trim()) {
       newErrors.email = "Az email cím kötelező";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -266,13 +270,16 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
 
           {/* Invoice Address */}
           <div>
-            <Label htmlFor="invoice">Számlázási cím</Label>
+            <Label htmlFor="invoice">Számlázási cím *</Label>
             <Input
               id="invoice"
               value={formData.invoice}
               onChange={(e) => handleInputChange('invoice', e.target.value)}
-              placeholder="Számlázási cím (opcionális)"
+              placeholder="Számlázási cím"
             />
+            {errors.invoice && (
+              <p className="text-sm text-destructive mt-1">{errors.invoice}</p>
+            )}
           </div>
 
           {/* Message */}
