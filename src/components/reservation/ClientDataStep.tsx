@@ -96,6 +96,10 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
       newErrors.phone = "Helyes formátum: +36 XX XXX XXXX";
     }
 
+    if (!formData.invoice.trim()) {
+      newErrors.invoice = "A számlázási cím kötelező";
+    }
+
     if (!formData.email.trim()) {
       newErrors.email = "Az email cím kötelező";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
