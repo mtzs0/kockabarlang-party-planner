@@ -266,13 +266,16 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
 
           {/* Invoice Address */}
           <div>
-            <Label htmlFor="invoice">Számlázási cím</Label>
+            <Label htmlFor="invoice">Számlázási cím *</Label>
             <Input
               id="invoice"
               value={formData.invoice}
               onChange={(e) => handleInputChange('invoice', e.target.value)}
-              placeholder="Számlázási cím (opcionális)"
+              placeholder="Számlázási cím"
             />
+            {errors.invoice && (
+              <p className="text-sm text-destructive mt-1">{errors.invoice}</p>
+            )}
           </div>
 
           {/* Message */}
