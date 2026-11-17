@@ -307,7 +307,12 @@ export const ClientDataStep = ({ data, onDataSubmit }: ClientDataStepProps) => {
               className="text-sm leading-5 cursor-pointer"
             >
               Tudomásul veszem és elfogadom az{" "}
-              <a href="#" className="text-primary underline">
+              <a
+                href="https://kockabarlang.hu/adatkezelesi-tajekoztato/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline"
+              >
                 Adatkezelési tájékoztatót
               </a>
               *
